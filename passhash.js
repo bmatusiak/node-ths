@@ -20,17 +20,17 @@ module.exports = function(length, callback, cmd){
 		var output = '';
 		var torProcess = spawn(cmd || 'tor', ['--hash-password', pass]);
 		torProcess.stdout.on('data', function(data){
-			output += data;
+			output += data.toString();
 		});
 		torProcess.on('close', function(){
 			output = output.split('\n');
-			var hash;
-			for (var i = output.length - 1; i > 0; i--){
-				if (output[i] && output[i] != ""){
-					hash = output[i];
-					break;
-				}
-			}
+			var hash = output[0];
+			// for (var i = output.length - 1; i > 0; i--){
+			// 	if (output[i] && output[i] != ""){
+			// 		hash = output[i];
+			// 		break;
+			// 	}
+			// }
 			callback(pass, hash);
 		});
 	}
